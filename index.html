@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="page-title">Rahmat Ramadhani | Software Engineering Student Portfolio</title>
+  <meta name="description" content="Portfolio Rahmat Ramadhani, siswa Rekayasa Perangkat Lunak / Software Engineering. 100% Vanilla Web Standards.">
+  <meta property="og:title" content="Rahmat Ramadhani | Software Engineering Student Portfolio">
+  <meta property="og:description" content="Modern Dark Futuristic Developer Portfolio built with HTML5, CSS3, and JavaScript ES6+.">
+  <meta property="og:image" content="assets/profile.jpg">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="scroll-progress" class="scroll-bar" role="progressbar" aria-label="Reading progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+
+  <div class="ambient-bg" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="grid-layer"></div>
+  </div>
+
+  <!-- 1. NAVBAR -->
+  <header class="site-header" id="header">
+    <nav class="nav-container container" aria-label="Main Navigation">
+      <a href="#home" class="brand" aria-label="Rahmat Ramadhani Portfolio">
+        <span class="code-bracket">&lt;</span><span data-bind="shortName">Rahmat</span><span class="brand-dot">.</span><span class="brand-sub">dev</span><span class="code-bracket">/&gt;</span>
+      </a>
+      <div class="nav-menu" id="nav-menu">
+        <ul class="nav-list">
+          <li><a href="#home" class="nav-link active">Home</a></li>
+          <li><a href="#about" class="nav-link">About</a></li>
+          <li><a href="#skills" class="nav-link">Skills</a></li>
+          <li><a href="#projects" class="nav-link">Projects</a></li>
+          <li><a href="#experience" class="nav-link">Experience</a></li>
+          <li><a href="#education" class="nav-link">Education</a></li>
+          <li><a href="#certificates" class="nav-link">Certificates</a></li>
+          <li><a href="#services" class="nav-link">Services</a></li>
+          <li><a href="#contact" class="nav-link">Contact</a></li>
+          <li><a href="admin.html" class="nav-link admin-nav-link" target="_blank" title="Open Admin CMS">Admin</a></li>
+        </ul>
+      </div>
+      <div class="nav-actions">
+        <button id="theme-toggle" class="icon-btn" aria-label="Toggle theme" title="Toggle theme">
+          <svg class="sun-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+          <svg class="moon-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </button>
+        <button id="hamburger-btn" class="hamburger" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- 2. HERO -->
+    <section class="section hero-sec" id="home">
+      <div class="container hero-layout">
+        <div class="hero-left reveal">
+          <div class="badge-status" id="hero-badge"><span class="dot-pulse"></span>Available for Learning &amp; Projects</div>
+          <h1 class="hero-heading" id="hero-heading">Hi, I'm <span class="gradient-text" data-bind="name">Rahmat Ramadhani</span></h1>
+          <div class="role-box" aria-live="polite">
+            <span class="role-lead" id="hero-role-lead">Specialized as a </span>
+            <span class="typing" id="typing-text">Software Engineering Student</span>
+            <span class="cursor">|</span>
+          </div>
+          <p class="hero-desc" id="hero-desc" data-bind="bio">Saya adalah siswa Software Engineering yang berfokus pada Web Development, Software Development, UI/UX, dan teknologi digital terkini. Membangun aplikasi web modern dengan standar kode bersih, modular, dan berperforma tinggi.</p>
+          <div class="hero-btns">
+            <a href="#projects" class="btn btn-primary" id="hero-btn-primary"><span>View My Projects</span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg></a>
+            <a href="#contact" class="btn btn-outline" id="hero-btn-secondary"><span>Contact Me</span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></a>
+            <button id="download-cv-btn" class="btn btn-ghost" title="Download CV Summary"><span id="hero-btn-cv">Download CV</span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg></button>
+          </div>
+          <div class="hero-social">
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="GitHub" data-social="github"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg></a>
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="LinkedIn" data-social="linkedin"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg></a>
+            <a href="mailto:rahmat.ramadhani@example.com" class="social-icon" aria-label="Email" data-bind-href="email"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></a>
+            <span class="sep"></span>
+            <code class="status-code">status: 200 OK</code>
+          </div>
+        </div>
+        <div class="hero-right reveal">
+          <div class="profile-card">
+            <div class="profile-glow"></div>
+            <div class="float-chip chip-1"><span class="chip-ico">⚡</span><div><strong>Clean Code</strong><small>Modern Web</small></div></div>
+            <div class="avatar-frame">
+              <img src="assets/profile.jpg" alt="Rahmat Ramadhani" class="avatar-img" id="profile-avatar-img" width="360" height="360" loading="eager">
+              <div class="scan-beam" aria-hidden="true"></div>
+            </div>
+            <div class="float-chip chip-2"><span class="chip-ico">🚀</span><div><strong id="hero-projects-count-chip">18+ Projects</strong><small>Web &amp; Software</small></div></div>
+            <div class="profile-chips">
+              <span class="chip-tag">HTML5</span><span class="chip-tag">CSS3</span><span class="chip-tag">JavaScript</span><span class="chip-tag">Git</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. ABOUT -->
+    <section class="section about-sec" id="about">
+      <div class="container">
+        <div class="sec-head reveal">
+          <span class="sec-badge">// ABOUT ME</span>
+          <h2 class="sec-title">Passion for Engineering &amp; Problem Solving</h2>
+          <p class="sec-desc">Mengenal lebih dekat latar belakang, filosofi belajar, dan dedikasi saya di jurusan Rekayasa Perangkat Lunak.</p>
+        </div>
+        <div class="about-grid">
+          <div class="card about-bio reveal">
+            <h3 class="card-head"><span class="accent-star">✦</span> Personal Profile &amp; Philosophy</h3>
+            <p id="about-p1">Halo! Saya adalah siswa aktif jurusan <strong>Rekayasa Perangkat Lunak (RPL)</strong> di <span data-bind="school">SMK Negeri 1 Jakarta</span>. Memiliki antusiasme tinggi dalam arsitektur perangkat lunak, web technologies modern, serta perancangan antarmuka pengguna yang intuitif.</p>
+            <p id="about-philosophy">Bagi saya, rekayasa perangkat lunak adalah seni menyederhanakan masalah nyata menjadi sistem komputasi yang terstruktur, efisien, dan mudah dipelihara. Saya selalu berkomitmen pada <em>Clean Code</em>, aksesibilitas semantik, dan performa tinggi.</p>
+            <ul class="check-list">
+              <li><span class="check-mark">✓</span> Fokus mendalam pada Vanilla JavaScript (ES6+), DOM APIs, dan Event Architecture.</li>
+              <li><span class="check-mark">✓</span> Penguasaan arsitektur CSS modern (Grid, Flexbox, Responsive Design, CSS Variables).</li>
+              <li><span class="check-mark">✓</span> Terbiasa bekerja dengan Git version control, collaborative mindset, dan pemecahan masalah komputasi.</li>
+            </ul>
+          </div>
+          <div class="about-side reveal">
+            <div class="info-grid">
+              <div class="info-card"><span class="info-lbl">Full Name</span><strong data-bind="name">Rahmat Ramadhani</strong></div>
+              <div class="info-card"><span class="info-lbl">Role</span><strong data-bind="role">Software Engineering Student</strong></div>
+              <div class="info-card"><span class="info-lbl">School</span><strong data-bind="school">SMK Negeri 1 Jakarta</strong></div>
+              <div class="info-card"><span class="info-lbl">Major</span><strong data-bind="major">Rekayasa Perangkat Lunak</strong></div>
+              <div class="info-card"><span class="info-lbl">Location</span><strong data-bind="location">Jakarta, Indonesia</strong></div>
+              <div class="info-card"><span class="info-lbl">Status</span><strong class="text-accent" id="about-status-text">Open for Internship</strong></div>
+            </div>
+            <div class="stats-grid">
+              <div class="stat-box"><div class="stat-num-row"><span class="counter" id="stat-proj-count" data-target="18">0</span><span class="stat-plus">+</span></div><span class="stat-lbl">Projects Completed</span></div>
+              <div class="stat-box"><div class="stat-num-row"><span class="counter" id="stat-tech-count" data-target="12">0</span><span class="stat-plus">+</span></div><span class="stat-lbl">Technologies Mastered</span></div>
+              <div class="stat-box"><div class="stat-num-row"><span class="counter" id="stat-cert-count" data-target="8">0</span><span class="stat-plus">+</span></div><span class="stat-lbl">Certificates Earned</span></div>
+              <div class="stat-box"><div class="stat-num-row"><span class="counter" id="stat-year-count" data-target="3">0</span><span class="stat-plus">+</span></div><span class="stat-lbl">Years Learning</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. SKILLS -->
+    <section class="section skills-sec" id="skills">
+      <div class="container">
+        <div class="sec-head reveal">
+          <span class="sec-badge">// TECH STACK</span>
+          <h2 class="sec-title">Skills &amp; Technical Competencies</h2>
+          <p class="sec-desc">Keahlian teknis dan perangkat kerja yang dikuasai secara mendalam dengan indikator progres terukur.</p>
+        </div>
+        <div class="skills-grid" id="skills-grid"></div>
+      </div>
+    </section>
+
+    <!-- 5. PROJECTS -->
+    <section class="section projects-sec" id="projects">
+      <div class="container">
+        <div class="sec-head reveal">
+          <span class="sec-badge">// PORTFOLIO</span>
+          <h2 class="sec-title">Featured Projects</h2>
+          <p class="sec-desc">Aplikasi, dashboard, dan game interaktif yang dibangun murni tanpa framework eksternal.</p>
+        </div>
+        <div class="projects-bar reveal">
+          <div class="search-box">
+            <svg class="search-ic" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" id="project-search" placeholder="Search projects by title, description, or tech..." aria-label="Search projects">
+            <button id="search-clear-btn" class="search-clear" aria-label="Clear search query">&times;</button>
+          </div>
+          <div class="filter-tabs" id="project-filter-tabs" role="tablist" aria-label="Project filter"></div>
+        </div>
+        <div class="projects-grid" id="projects-grid" aria-live="polite"></div>
+        <div class="empty-state hidden" id="projects-empty-state">
+          <div class="empty-ico">🔍</div>
+          <h3>No Projects Found</h3>
+          <p>Tidak ada proyek yang sesuai dengan kriteria pencarian atau filter saat ini.</p>
+          <button id="reset-filters-btn" class="btn btn-outline btn-sm">Reset Filter &amp; Search</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. EXPERIENCE -->
+    <section class="section exp-sec" id="experience">
+      <div class="container">
+        <div class="sec-head reveal">
+          <span class="sec-badge">// TIMELINE</span>
+          <h2 class="sec-title">Experience &amp; Milestones</h2>
+          <p class="sec-desc">Rekam jejak kontribusi, pembelajaran aktif, dan implementasi proyek nyata selama menempuh RPL.</p>
+        </div>
+        <div class="timeline reveal" id="experience-timeline"></div>
+      </div>
+    </section>
+
+    <!-- 7. EDUCATION -->
+    <section class="section edu-sec" id="education">
+      <div class="container">
+        <div class="sec-head reveal">
+          <span class="sec-badge">// ACADEMICS</span>
+          <h2 class="sec-title">Education &amp; Qualifications</h2>
+          <p class="sec-desc">Latar belakang pendidikan kejuruan formal dengan fokus intensif pada rekayasa perangkat lunak.</p>
+        </div>
+        <div class="edu-wrap reveal" id="education-container"></div>
+      </div>
+    </section>
+
+    <!-- 8. CERTIFICATES -->
+    <section class="section cert-sec" id="certificates">
+      <div class="container">
+        <div class="sec-head reveal">
+          <span class="sec-badge">// CREDENTIALS</span>
+          <h2 class="sec-title">Certificates &amp; Achievements</h2>
+          <p class="sec-desc">Bukti kompetensi resmi dan sertifikasi keahlian. Klik pada kartu untuk melihat pratinjau verifikasi kredensial.</p>
+        </div>
+        <div class="cert-grid reveal" id="certificates-grid"></div>
+      </div>
+    </section>
+
+    <!-- 9. SERVICES -->
+    <section class="section serv-sec" id="services">
+      <div class="container">
+        <div class="sec-head reveal">
+          <span class="sec-badge">// SERVICES</span>
+          <h2 class="sec-title">What I Can Do For You</h2>
+          <p class="sec-desc">Layanan dan kapabilitas teknis yang siap saya berikan untuk proyek digital dan tugas kolaborasi.</p>
+        </div>
+        <div class="services-grid" id="services-grid"></div>
+      </div>
+    </section>
+
+    <!-- 10. CONTACT -->
+    <section class="section contact-sec" id="contact">
+      <div class="container">
+        <div class="sec-head reveal">
+          <span class="sec-badge">// GET IN TOUCH</span>
+          <h2 class="sec-title">Let's Connect &amp; Collaborate</h2>
+          <p class="sec-desc">Punya pertanyaan, tawaran magang, proyek kolaborasi, atau sekadar ingin berdiskusi seputar software engineering?</p>
+        </div>
+        <div class="contact-grid">
+          <div class="card contact-card reveal">
+            <h3 class="card-head">Contact Information</h3>
+            <p class="contact-lead">Saya selalu terbuka untuk berdiskusi seputar peluang magang, proyek open-source, dan pengembangan website.</p>
+            <div class="channel-row">
+              <div class="channel-ico"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></div>
+              <div class="channel-body">
+                <small>Email Address</small>
+                <a href="mailto:rahmat.ramadhani@example.com" class="channel-val" id="contact-email-text" data-bind="email">rahmat.ramadhani@example.com</a>
+              </div>
+              <button id="copy-email-btn" class="btn btn-outline btn-sm" title="Copy email address" aria-label="Copy email">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <span class="copy-lbl">Copy</span>
+              </button>
+            </div>
+            <div class="channel-row">
+              <div class="channel-ico">📍</div>
+              <div class="channel-body">
+                <small>Current Location</small>
+                <span class="channel-val" id="contact-location-val" data-bind="location">Jakarta, Indonesia</span>
+              </div>
+            </div>
+            <div class="channel-row">
+              <div class="channel-ico">⏱️</div>
+              <div class="channel-body">
+                <small>Response Time</small>
+                <span class="channel-val text-accent">&lt; 24 Hours on Weekdays</span>
+              </div>
+            </div>
+            <div class="contact-social-wrap">
+              <span class="contact-social-lbl">Connect on Social Profiles:</span>
+              <div class="social-row">
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm" data-social="github"><svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg><span>GitHub</span></a>
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm" data-social="linkedin"><svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg><span>LinkedIn</span></a>
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm" data-social="instagram"><svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg><span>Instagram</span></a>
+              </div>
+            </div>
+          </div>
+          <div class="card contact-form-box reveal">
+            <h3 class="card-head">Send a Message</h3>
+            <p class="contact-lead">Isi formulir di bawah ini. Validasi dijalankan secara lokal di sisi klien.</p>
+            <form id="contact-form" novalidate>
+              <div class="field-item">
+                <label for="contact-name">Your Name <span class="req">*</span></label>
+                <input type="text" id="contact-name" name="name" placeholder="e.g. Rahmat Ramadhani" autocomplete="name" required>
+                <span class="val-err" id="name-error" aria-live="polite"></span>
+              </div>
+              <div class="field-item">
+                <label for="contact-email">Your Email <span class="req">*</span></label>
+                <input type="email" id="contact-email" name="email" placeholder="e.g. rahmat@example.com" autocomplete="email" required>
+                <span class="val-err" id="email-error" aria-live="polite"></span>
+              </div>
+              <div class="field-item">
+                <label for="contact-subject">Subject <span class="req">*</span></label>
+                <input type="text" id="contact-subject" name="subject" placeholder="e.g. Web Development Internship" required>
+                <span class="val-err" id="subject-error" aria-live="polite"></span>
+              </div>
+              <div class="field-item">
+                <label for="contact-message">Message <span class="req">*</span></label>
+                <textarea id="contact-message" name="message" rows="4" placeholder="Tuliskan pesan Anda di sini (minimal 10 karakter)..." required></textarea>
+                <div class="msg-meta">
+                  <span class="val-err" id="message-error" aria-live="polite"></span>
+                  <span class="char-count" id="char-count">0 / 10 min</span>
+                </div>
+              </div>
+              <button type="submit" id="contact-submit-btn" class="btn btn-primary btn-block">
+                <span>Prepare &amp; Send Message</span>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+              </button>
+              <div id="form-feedback" class="feedback-alert hidden" role="alert"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 11. FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-content">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#home" class="brand"><span class="code-bracket">&lt;</span><span data-bind="shortName">Rahmat</span><span class="brand-dot">.</span><span class="brand-sub">dev</span><span class="code-bracket">/&gt;</span></a>
+          <p class="footer-motto" id="footer-motto">Membangun pengalaman antarmuka digital yang modern, responsif, dan berperforma tinggi dengan standar web murni.</p>
+        </div>
+        <div class="footer-links-col">
+          <h4>Navigation</h4>
+          <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#education">Education</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="admin.html" target="_blank" style="color:var(--accent-cyan);">Admin Dashboard ↗</a></li>
+          </ul>
+        </div>
+        <div class="footer-links-col">
+          <h4>Socials</h4>
+          <ul>
+            <li><a href="https://github.com" target="_blank" rel="noopener noreferrer" data-social="github">GitHub</a></li>
+            <li><a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" data-social="linkedin">LinkedIn</a></li>
+            <li><a href="https://instagram.com" target="_blank" rel="noopener noreferrer" data-social="instagram">Instagram</a></li>
+            <li><a href="admin.html" target="_blank" style="color:var(--accent-blue);">CMS Management</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p id="footer-copyright">&copy; 2026 <span data-bind="name">Rahmat Ramadhani</span>. Built with HTML5, CSS3 &amp; Vanilla JavaScript ES6+.</p>
+        <span class="footer-tag">100% Framework-Free • Zero Dependencies</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODALS -->
+  <div id="project-modal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="modal-project-title" aria-hidden="true">
+    <div class="modal-card card">
+      <button class="modal-x" id="project-modal-close" aria-label="Close modal">&times;</button>
+      <div id="project-modal-content"></div>
+    </div>
+  </div>
+
+  <div id="cert-modal" class="modal-layer" role="dialog" aria-modal="true" aria-labelledby="modal-cert-title" aria-hidden="true">
+    <div class="modal-card cert-modal-box card">
+      <button class="modal-x" id="cert-modal-close" aria-label="Close certificate modal">&times;</button>
+      <div id="cert-modal-content"></div>
+    </div>
+  </div>
+
+  <button id="back-to-top" class="to-top-btn" aria-label="Scroll to top" title="Back to top">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"></polyline></svg>
+  </button>
+
+  <div id="toast-container" class="toast-box" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
