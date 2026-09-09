@@ -3,7 +3,6 @@
 # =============================================================================
 # File admin dashboard dengan credentials
 admin.js
-admin.html
 
 # Environment variables & secrets
 .env
