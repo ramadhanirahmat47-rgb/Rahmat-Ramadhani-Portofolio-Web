@@ -1,7 +1,4 @@
 {
-  "framework": null,
   "cleanUrls": true,
-  "rewrites": [
-    { "source": "/admin", "destination": "/admin.html" }
-  ]
+  "trailingSlash": false
 }
