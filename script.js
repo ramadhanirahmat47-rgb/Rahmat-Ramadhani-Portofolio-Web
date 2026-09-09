@@ -7,6 +7,20 @@
 
 'use strict';
 
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+
+const firebaseConfig = {
+  projectId: "stately-elf-8f6jr",
+  appId: "1:202958077308:web:96ac679d7a92791aa678f9",
+  apiKey: "AIzaSyD9Lt_XfodZi8trfbtSc5TkRb5HZcPT5j0",
+  authDomain: "stately-elf-8f6jr.firebaseapp.com"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app, "ai-studio-rahmatramadhanip-12f256b3-3a45-4b43-bfa9-a8d04daeffca");
+const docRef = doc(db, "portfolio", "data");
+
+
 /* ==========================================================================
    DEFAULT COMPLETE DATASET (Shared Schema with admin.js)
    ========================================================================== */
@@ -347,55 +361,32 @@ const defaultPortfolioData = {
 /* ==========================================================================
    LOCALSTORAGE DATABASE SYNC ENGINE
    ========================================================================== */
-const PortfolioDB = {
-  KEY: "portfolioData",
 
-  get() {
-    try {
-      const raw = localStorage.getItem(this.KEY);
-      if (!raw) {
-        localStorage.setItem(this.KEY, JSON.stringify(defaultPortfolioData));
-        return JSON.parse(JSON.stringify(defaultPortfolioData));
-      }
-      const parsed = JSON.parse(raw);
-      // Automatically migrate legacy placeholder name if present in localStorage
-      if (parsed.profile && (parsed.profile.name === "Alex Pratama" || !parsed.profile.name)) {
-        parsed.profile.name = defaultPortfolioData.profile.name;
-        if (parsed.profile.email === "alex.pratama@example.com") {
-          parsed.profile.email = defaultPortfolioData.profile.email;
-        }
-      }
-      if (parsed.hero && (parsed.hero.name === "Alex Pratama" || !parsed.hero.name)) {
-        parsed.hero.name = defaultPortfolioData.hero.name;
-      }
-      if (parsed.settings) {
-        if (parsed.settings.siteTitle && parsed.settings.siteTitle.includes("Alex Pratama")) {
-          parsed.settings.siteTitle = parsed.settings.siteTitle.replace(/Alex Pratama/g, "Rahmat Ramadhani");
-        }
-        if (parsed.settings.footerCopyright && parsed.settings.footerCopyright.includes("Alex Pratama")) {
-          parsed.settings.footerCopyright = parsed.settings.footerCopyright.replace(/Alex Pratama/g, "Rahmat Ramadhani");
-        }
-      }
-      if (parsed.social && parsed.social.email === "alex.pratama@example.com") {
-        parsed.social.email = defaultPortfolioData.social.email;
-      }
-      return {
-        ...defaultPortfolioData,
-        ...parsed,
-        profile: { ...defaultPortfolioData.profile, ...(parsed.profile || {}) },
-        hero: { ...defaultPortfolioData.hero, ...(parsed.hero || {}) },
-        social: { ...defaultPortfolioData.social, ...(parsed.social || {}) },
-        settings: { ...defaultPortfolioData.settings, ...(parsed.settings || {}) }
-      };
-    } catch (err) {
-      console.error('Error reading portfolioData from localStorage:', err);
-      return JSON.parse(JSON.stringify(defaultPortfolioData));
-    }
+// Global active data state
+let appData = JSON.parse(JSON.stringify(defaultPortfolioData));
+
+onSnapshot(docRef, (snap) => {
+  if (snap.exists()) {
+    const parsed = snap.data();
+    appData = {
+      ...defaultPortfolioData,
+      ...parsed,
+      profile: { ...defaultPortfolioData.profile, ...(parsed.profile || {}) },
+      hero: { ...defaultPortfolioData.hero, ...(parsed.hero || {}) },
+      social: { ...defaultPortfolioData.social, ...(parsed.social || {}) },
+      settings: { ...defaultPortfolioData.settings, ...(parsed.settings || {}) }
+    };
   }
-};
+  // Re-render
+  syncDynamicData();
+  renderSkills();
+  renderExperience();
+  renderEducation();
+  renderCertificates();
+  renderServices();
+  ProjectsEngine.render();
+});
 
-// Global active data state read from LocalStorage
-let appData = PortfolioDB.get();
 
 /* ==========================================================================
    TOAST NOTIFICATION MANAGER
