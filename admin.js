@@ -1774,6 +1774,9 @@ const AdminApp = {
 /* ==========================================================================
    INITIALIZATION ON DOM LOAD
    ========================================================================== */
+// Tambahkan baris ini untuk mengekspos AdminApp ke atribut onclick di HTML
+window.AdminApp = AdminApp; 
+
 document.addEventListener('DOMContentLoaded', () => {
   AdminApp.init();
 });
