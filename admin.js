@@ -13,8 +13,8 @@
  * Production applications should use a secure backend authentication system.
  */
 const ADMIN_CONFIG = {
-  username: "admin",
-  password: "admin123"
+  username: "Rahmat Ramadhani",
+  password: "192010"
 };
 
 /* ==========================================================================
