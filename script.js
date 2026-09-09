@@ -7,18 +7,19 @@
 
 'use strict';
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-import { getFirestore, doc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+import { initializeApp } from "firebase/app";
+import { getFirestore, doc, onSnapshot, setDoc, getDoc } from "firebase/firestore";
 
 const firebaseConfig = {
-  projectId: "stately-elf-8f6jr",
-  appId: "1:202958077308:web:96ac679d7a92791aa678f9",
-  apiKey: "AIzaSyD9Lt_XfodZi8trfbtSc5TkRb5HZcPT5j0",
-  authDomain: "stately-elf-8f6jr.firebaseapp.com"
+  projectId: "gen-lang-client-0307133880",
+  appId: "1:946297603830:web:89b2a8559540581f5d0ed7",
+  apiKey: "AIzaSyBhPmsH-5LKHrjMnq8RKFBwZYD0VSJtRRk",
+  authDomain: "gen-lang-client-0307133880.firebaseapp.com"
 };
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app, "ai-studio-rahmatramadhanip-12f256b3-3a45-4b43-bfa9-a8d04daeffca");
+const db = getFirestore(app, "ai-studio-rahmatramadhanip-76a0cf0e-1ed3-4663-bb4c-629074da6c9a");
 const docRef = doc(db, "portfolio", "data");
+
 
 
 /* ==========================================================================

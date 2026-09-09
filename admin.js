@@ -7,6 +7,19 @@
 
 'use strict';
 
+import { initializeApp } from "firebase/app";
+import { getFirestore, doc, onSnapshot, setDoc, getDoc } from "firebase/firestore";
+
+const firebaseConfig = {
+  projectId: "gen-lang-client-0307133880",
+  appId: "1:946297603830:web:89b2a8559540581f5d0ed7",
+  apiKey: "AIzaSyBhPmsH-5LKHrjMnq8RKFBwZYD0VSJtRRk",
+  authDomain: "gen-lang-client-0307133880.firebaseapp.com"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app, "ai-studio-rahmatramadhanip-76a0cf0e-1ed3-4663-bb4c-629074da6c9a");
+const docRef = doc(db, "portfolio", "data");
+
 /*
  * DEMO ADMIN AUTHENTICATION
  * This frontend-only authentication is for educational/demo purposes.
@@ -430,90 +443,61 @@ function compressImage(file, maxDimension = 900, quality = 0.8) {
 const StorageEngine = {
   KEY: "portfolioData",
 
-  load() {
-    try {
-      const raw = localStorage.getItem(this.KEY);
-      if (!raw) {
+  load(callback) {
+    onSnapshot(docRef, (snap) => {
+      if (snap.exists()) {
+        const parsed = snap.data();
+        const finalData = {
+          ...defaultPortfolioData,
+          ...parsed,
+          profile: { ...defaultPortfolioData.profile, ...(parsed.profile || {}) },
+          hero: { ...defaultPortfolioData.hero, ...(parsed.hero || {}) },
+          social: { ...defaultPortfolioData.social, ...(parsed.social || {}) },
+          settings: { ...defaultPortfolioData.settings, ...(parsed.settings || {}) }
+        };
+        callback(finalData);
+      } else {
         this.save(defaultPortfolioData);
-        return JSON.parse(JSON.stringify(defaultPortfolioData));
+        callback(JSON.parse(JSON.stringify(defaultPortfolioData)));
       }
-      const parsed = JSON.parse(raw);
-      // Migrate legacy placeholder name if present in localStorage
-      if (parsed.profile && (parsed.profile.name === "Alex Pratama" || !parsed.profile.name)) {
-        parsed.profile.name = defaultPortfolioData.profile.name;
-        if (parsed.profile.email === "alex.pratama@example.com") {
-          parsed.profile.email = defaultPortfolioData.profile.email;
-        }
-      }
-      if (parsed.hero && (parsed.hero.name === "Alex Pratama" || !parsed.hero.name)) {
-        parsed.hero.name = defaultPortfolioData.hero.name;
-      }
-      if (parsed.settings) {
-        if (parsed.settings.siteTitle && parsed.settings.siteTitle.includes("Alex Pratama")) {
-          parsed.settings.siteTitle = parsed.settings.siteTitle.replace(/Alex Pratama/g, "Rahmat Ramadhani");
-        }
-        if (parsed.settings.footerCopyright && parsed.settings.footerCopyright.includes("Alex Pratama")) {
-          parsed.settings.footerCopyright = parsed.settings.footerCopyright.replace(/Alex Pratama/g, "Rahmat Ramadhani");
-        }
-      }
-      if (parsed.social && parsed.social.email === "alex.pratama@example.com") {
-        parsed.social.email = defaultPortfolioData.social.email;
-      }
-      // Merge with defaults in case of missing keys
-      return {
-        ...defaultPortfolioData,
-        ...parsed,
-        profile: { ...defaultPortfolioData.profile, ...(parsed.profile || {}) },
-        hero: { ...defaultPortfolioData.hero, ...(parsed.hero || {}) },
-        social: { ...defaultPortfolioData.social, ...(parsed.social || {}) },
-        settings: { ...defaultPortfolioData.settings, ...(parsed.settings || {}) }
-      };
-    } catch (err) {
-      console.error('Failed to parse portfolioData from localStorage:', err);
-      this.save(defaultPortfolioData);
-      return JSON.parse(JSON.stringify(defaultPortfolioData));
-    }
+    }, (error) => {
+      console.error("Firebase load error:", error);
+      ToastManager.show('Gagal memuat data dari Firebase.', 'error');
+      callback(JSON.parse(JSON.stringify(defaultPortfolioData)));
+    });
   },
 
-  save(data) {
+  async save(data) {
     try {
       data.settings = data.settings || {};
       data.settings.lastUpdated = new Date().toISOString().split('T')[0];
-      const raw = JSON.stringify(data);
-      localStorage.setItem(this.KEY, raw);
+      await setDoc(docRef, data);
       this.updateStorageMeter();
       return true;
     } catch (err) {
-      console.error('LocalStorage Save Error:', err);
-      ToastManager.show('Gagal menyimpan: LocalStorage penuh atau kuota terlampaui.', 'error');
+      console.error('Firebase Save Error:', err);
+      ToastManager.show('Gagal menyimpan ke Firebase. Cek koneksi.', 'error');
       return false;
     }
   },
 
-  reset() {
-    localStorage.removeItem(this.KEY);
-    this.save(defaultPortfolioData);
+  async reset() {
+    await this.save(defaultPortfolioData);
     this.updateStorageMeter();
   },
 
   getUsageBytes() {
-    const raw = localStorage.getItem(this.KEY) || '';
-    return new Blob([raw]).size;
+    return 0; // Not applicable for Firebase
   },
 
   updateStorageMeter() {
-    const bytes = this.getUsageBytes();
-    const kb = (bytes / 1024).toFixed(1);
-    const approxQuota = 5 * 1024; // 5MB approx
-    const pct = Math.min(Math.max((kb / approxQuota) * 100, 0.5), 100).toFixed(1);
-
     const txt = document.getElementById('storage-text');
     const bar = document.getElementById('dash-storage-bar');
     const detail = document.getElementById('dash-storage-detail');
 
-    if (txt) txt.textContent = `Storage: ${kb} KB / 5 MB`;
-    if (bar) bar.style.width = `${pct}%`;
-    if (detail) detail.textContent = `${kb} KB used (${pct}% of quota)`;
+    if (txt) txt.textContent = `Storage: Firebase Cloud`;
+    if (bar) bar.style.width = `10%`;
+    if (detail) detail.textContent = `Data disinkronisasi ke Cloud secara realtime`;
   }
 };
 
@@ -526,11 +510,16 @@ const AdminApp = {
   confirmCallback: null,
 
   init() {
-    this.data = StorageEngine.load();
-    this.initAuth();
-    this.bindGlobalEvents();
-    this.renderAll();
-    StorageEngine.updateStorageMeter();
+    StorageEngine.load((data) => {
+      const isFirstLoad = !this.data;
+      this.data = data;
+      if (isFirstLoad) {
+        this.initAuth();
+        this.bindGlobalEvents();
+      }
+      this.renderAll();
+      StorageEngine.updateStorageMeter();
+    });
   },
 
   /* ------------------------------------------------------------------------
