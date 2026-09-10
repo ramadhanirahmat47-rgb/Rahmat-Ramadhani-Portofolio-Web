@@ -1,9 +1,3 @@
-/**
- * ==============================================================================
- * RAHMAT RAMADHANI - MODERN DARK FUTURISTIC DEVELOPER PORTFOLIO ENGINE
- * 100% Pure Vanilla JavaScript (ES6+) • Client-Side LocalStorage CMS Sync
- * ==============================================================================
- */
 
 'use strict';
 
@@ -29,19 +23,19 @@ const defaultPortfolioData = {
   profile: {
     name: "Rahmat Ramadhani",
     role: "Software Engineering Student",
-    school: "SMK Negeri 1 Jakarta",
+    school: "SMK Krian 1",
     major: "Rekayasa Perangkat Lunak / Software Engineering",
-    location: "Jakarta, Indonesia",
+    location: "Sidoarjo, Jawa Timur",
     email: "rahmat.ramadhani@example.com",
     status: "Available for Learning & Projects",
     avatar: "assets/profile.jpg",
     bio: "Saya adalah siswa Software Engineering yang tertarik pada Web Development, Software Development, UI/UX, dan teknologi digital terkini. Membangun aplikasi web modern dengan standar kode bersih, modular, dan berperforma tinggi.",
     philosophy: "Bagi saya, rekayasa perangkat lunak adalah seni menyederhanakan masalah nyata menjadi sistem komputasi yang terstruktur, efisien, dan mudah dipelihara. Saya selalu berkomitmen pada Clean Code, aksesibilitas semantik, dan performa tinggi.",
     stats: {
-      projects: 18,
+      projects: 3,
       technologies: 12,
-      certificates: 8,
-      learningYears: 3
+      certificates: 4,
+      learningYears: 1
     }
   },
   hero: {
