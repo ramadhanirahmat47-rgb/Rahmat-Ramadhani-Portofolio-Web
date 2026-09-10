@@ -3,8 +3,9 @@
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
 import { getFirestore, doc, onSnapshot, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js";
 
-let app, db, docRef;
+let app, db, docRef, auth;
 
 async function initFirebase() {
   const response = await fetch('/firebase-applet-config.json');
@@ -13,6 +14,7 @@ async function initFirebase() {
   app = initializeApp(firebaseConfig);
   const databaseId = firebaseConfig.firestoreDatabaseId || "(default)";
   db = getFirestore(app, databaseId);
+  auth = getAuth(app);
   docRef = doc(db, "portfolio", "data");
   
   AdminApp.init();
@@ -23,11 +25,6 @@ async function initFirebase() {
  * This frontend-only authentication is for educational/demo purposes.
  * Production applications should use a secure backend authentication system.
  */
-const ADMIN_CONFIG = {
-  username: "Rahmat Ramadhani",
-  password: "192010"
-};
-
 /* ==========================================================================
    CENTRAL DEFAULT PORTFOLIO DATA ARCHITECTURE
    ========================================================================== */
@@ -436,15 +433,16 @@ const AdminApp = {
     const pwdInput = document.getElementById('login-password');
     const logoutBtn = document.getElementById('logout-btn');
 
-    const isAuthenticated = sessionStorage.getItem('adminAuth') === 'true' || localStorage.getItem('adminAuth') === 'true';
-
-    if (isAuthenticated) {
-      if (loginView) loginView.classList.add('hidden');
-      if (dashboardView) dashboardView.classList.remove('hidden');
-    } else {
-      if (loginView) loginView.classList.remove('hidden');
-      if (dashboardView) dashboardView.classList.add('hidden');
-    }
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        if (loginView) loginView.classList.add('hidden');
+        if (dashboardView) dashboardView.classList.remove('hidden');
+        this.renderAll();
+      } else {
+        if (loginView) loginView.classList.remove('hidden');
+        if (dashboardView) dashboardView.classList.add('hidden');
+      }
+    });
 
     if (togglePwd && pwdInput) {
       togglePwd.addEventListener('click', () => {
@@ -455,21 +453,18 @@ const AdminApp = {
     }
 
     if (loginForm) {
-      loginForm.addEventListener('submit', (e) => {
+      loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const u = document.getElementById('login-username').value.trim();
+        const u = document.getElementById('login-email').value.trim();
         const p = pwdInput.value.trim();
 
-        if (u === ADMIN_CONFIG.username && p === ADMIN_CONFIG.password) {
-          sessionStorage.setItem('adminAuth', 'true');
+        try {
+          await signInWithEmailAndPassword(auth, u, p);
           loginErr.classList.add('hidden');
           loginForm.reset();
-          loginView.classList.add('hidden');
-          dashboardView.classList.remove('hidden');
           ToastManager.show('Login successful! Welcome to Admin CMS.', 'success');
-          this.renderAll();
-        } else {
-          loginErr.textContent = 'Username atau password salah.';
+        } catch (error) {
+          loginErr.textContent = error.message || 'Email atau password salah.';
           loginErr.classList.remove('hidden');
           ToastManager.show('Login failed: Invalid credentials.', 'error');
         }
@@ -481,18 +476,20 @@ const AdminApp = {
         this.confirm(
           'Confirm Logout',
           'Apakah Anda yakin ingin keluar dari Admin Dashboard?',
-          () => {
-            sessionStorage.removeItem('adminAuth');
-            localStorage.removeItem('adminAuth');
-            dashboardView.classList.add('hidden');
-            loginView.classList.remove('hidden');
-            ToastManager.show('Logged out successfully.', 'info');
+          async () => {
+            try {
+              await signOut(auth);
+              ToastManager.show('Logged out successfully.', 'info');
+            } catch (error) {
+              ToastManager.show('Logout failed.', 'error');
+            }
           },
           '🚪'
         );
       });
     }
   },
+
 
   /* ------------------------------------------------------------------------
      NAVIGATION & TABS
