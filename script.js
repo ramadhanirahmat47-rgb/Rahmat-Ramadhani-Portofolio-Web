@@ -369,7 +369,13 @@ onSnapshot(docRef, (snap) => {
       profile: { ...defaultPortfolioData.profile, ...(parsed.profile || {}) },
       hero: { ...defaultPortfolioData.hero, ...(parsed.hero || {}) },
       social: { ...defaultPortfolioData.social, ...(parsed.social || {}) },
-      settings: { ...defaultPortfolioData.settings, ...(parsed.settings || {}) }
+      settings: { ...defaultPortfolioData.settings, ...(parsed.settings || {}) },
+      skills: (parsed.skills && parsed.skills.length) ? parsed.skills : defaultPortfolioData.skills,
+      experience: (parsed.experience && parsed.experience.length) ? parsed.experience : defaultPortfolioData.experience,
+      projects: (parsed.projects && parsed.projects.length) ? parsed.projects : defaultPortfolioData.projects,
+      education: (parsed.education && parsed.education.length) ? parsed.education : defaultPortfolioData.education,
+      certificates: (parsed.certificates && parsed.certificates.length) ? parsed.certificates : defaultPortfolioData.certificates,
+      services: (parsed.services && parsed.services.length) ? parsed.services : defaultPortfolioData.services
     };
   }
   // Re-render
@@ -380,6 +386,9 @@ onSnapshot(docRef, (snap) => {
   renderCertificates();
   renderServices();
   ProjectsEngine.render();
+  // Re-observe dynamically created .reveal elements and skill bars
+  refreshScrollReveal();
+  refreshSkillBars();
 });
 
 
@@ -817,10 +826,32 @@ function initCounters() {
   list.forEach(i => obs.observe(i));
 }
 
+let revealObserver = null;
+
+function initScrollReveal() {
+  revealObserver = new IntersectionObserver((entries, o) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('revealed');
+        o.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  const items = document.querySelectorAll('.reveal');
+  items.forEach(i => revealObserver.observe(i));
+}
+
+function refreshScrollReveal() {
+  if (!revealObserver) return;
+  // Observe any new .reveal elements that haven't been revealed yet
+  const items = document.querySelectorAll('.reveal:not(.revealed)');
+  items.forEach(i => revealObserver.observe(i));
+}
+
+let skillBarObserver = null;
+
 function initSkillBars() {
-  const bars = document.querySelectorAll('.bar-val');
-  if (!bars.length) return;
-  const obs = new IntersectionObserver((entries, o) => {
+  skillBarObserver = new IntersectionObserver((entries, o) => {
     entries.forEach(e => {
       if (e.isIntersecting) {
         const b = e.target;
@@ -829,21 +860,18 @@ function initSkillBars() {
       }
     });
   }, { threshold: 0.25 });
-  bars.forEach(b => obs.observe(b));
+  const bars = document.querySelectorAll('.bar-val');
+  bars.forEach(b => skillBarObserver.observe(b));
 }
 
-function initScrollReveal() {
-  const items = document.querySelectorAll('.reveal');
-  if (!items.length) return;
-  const obs = new IntersectionObserver((entries, o) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('revealed');
-        o.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.1 });
-  items.forEach(i => obs.observe(i));
+function refreshSkillBars() {
+  if (!skillBarObserver) return;
+  // Observe any new skill bar elements after re-render
+  const bars = document.querySelectorAll('.bar-val');
+  bars.forEach(b => {
+    b.style.width = '0%';
+    skillBarObserver.observe(b);
+  });
 }
 
 /* ==========================================================================
