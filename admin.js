@@ -20,11 +20,7 @@ async function initFirebase() {
   AdminApp.init();
 }
 
-/*
- * DEMO ADMIN AUTHENTICATION
- * This frontend-only authentication is for educational/demo purposes.
- * Production applications should use a secure backend authentication system.
- */
+
 /* ==========================================================================
    CENTRAL DEFAULT PORTFOLIO DATA ARCHITECTURE
    ========================================================================== */
