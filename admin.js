@@ -1,9 +1,3 @@
-/**
- * ==============================================================================
- * RAHMAT.DEV PORTFOLIO - ADMIN DASHBOARD & CMS ENGINE
- * 100% Pure Vanilla JavaScript (ES6+) • Client-Side LocalStorage Database
- * ==============================================================================
- */
 
 'use strict';
 
