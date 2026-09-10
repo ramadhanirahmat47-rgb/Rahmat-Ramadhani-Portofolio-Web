@@ -4,15 +4,19 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
 import { getFirestore, doc, onSnapshot, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
 
-const firebaseConfig = {
-  projectId: "gen-lang-client-0307133880",
-  appId: "1:946297603830:web:89b2a8559540581f5d0ed7",
-  apiKey: "AIzaSyBhPmsH-5LKHrjMnq8RKFBwZYD0VSJtRRk",
-  authDomain: "gen-lang-client-0307133880.firebaseapp.com"
-};
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app, "ai-studio-rahmatramadhanip-76a0cf0e-1ed3-4663-bb4c-629074da6c9a");
-const docRef = doc(db, "portfolio", "data");
+let app, db, docRef;
+
+async function initFirebase() {
+  const response = await fetch('/firebase-applet-config.json');
+  const firebaseConfig = await response.json();
+  
+  app = initializeApp(firebaseConfig);
+  const databaseId = firebaseConfig.firestoreDatabaseId || "(default)";
+  db = getFirestore(app, databaseId);
+  docRef = doc(db, "portfolio", "data");
+  
+  AdminApp.init();
+}
 
 /*
  * DEMO ADMIN AUTHENTICATION
@@ -28,338 +32,242 @@ const ADMIN_CONFIG = {
    CENTRAL DEFAULT PORTFOLIO DATA ARCHITECTURE
    ========================================================================== */
 const defaultPortfolioData = {
-  profile: {
-    name: "Rahmat Ramadhani",
-    role: "Software Engineering Student",
-    school: "SMK Krian 1",
-    major: "Rekayasa Perangkat Lunak / Software Engineering",
-    location: "Sidoarjo, Jawa Timur",
-    email: "rahmat.ramadhani@example.com",
-    status: "Available for Learning & Projects",
-    avatar: "assets/profile.jpg",
-    bio: "Saya adalah siswa Software Engineering yang tertarik pada Web Development, Software Development, UI/UX, dan teknologi digital terkini. Membangun aplikasi web modern dengan standar kode bersih, modular, dan berperforma tinggi.",
-    philosophy: "Bagi saya, rekayasa perangkat lunak adalah seni menyederhanakan masalah nyata menjadi sistem komputasi yang terstruktur, efisien, dan mudah dipelihara. Saya selalu berkomitmen pada Clean Code, aksesibilitas semantik, dan performa tinggi.",
-    stats: {
-      projects: 3,
-      technologies: 12,
-      certificates: 4,
-      learningYears: 1
+  "profile": {
+    "name": "Rahmat Ramadhani",
+    "role": "Software Engineering Student",
+    "school": "SMK Krian 1 Sidoarjo",
+    "major": "Rekayasa Perangkat Lunak / Software Engineering",
+    "location": "Sidoarjo, Jawa Timur",
+    "email": "ramadhanirahmat47@gmail.com",
+    "status": "Available for Learning & Projects",
+    "avatar": "assets/profile.jpg",
+    "bio": "Sebagai seorang pelajar Rekayasa Perangkat Lunak (RPL) di SMK Krian 1, saya memiliki ketertarikan mendalam pada dunia pengembangan web dan pemrograman. Perjalanan belajar ini tidak hanya memberi saya pemahaman teknis yang kuat, tetapi juga memicu semangat saya untuk terus mengeksplorasi teknologi-teknologi terbaru yang terus berkembang. Bagi saya, mempraktikkan ilmu melalui pembuatan proyek-proyek digital yang fungsional dan berdampak nyata adalah cara terbaik untuk mengasah keterampilan, memecahkan masalah kompleks, dan menghadirkan solusi yang bermanfaat bagi banyak orang.",
+    "philosophy": "Sebagai seorang pelajar Rekayasa Perangkat Lunak (RPL) di SMK Krian 1, saya memiliki ketertarikan mendalam pada dunia pengembangan web dan pemrograman. Perjalanan belajar ini tidak hanya memberi saya pemahaman teknis yang kuat, tetapi juga memicu semangat saya untuk terus mengeksplorasi teknologi-teknologi terbaru yang terus berkembang. Bagi saya, mempraktikkan ilmu melalui pembuatan proyek-proyek digital yang fungsional dan berdampak nyata adalah cara terbaik untuk mengasah keterampilan, memecahkan masalah kompleks, dan menghadirkan solusi yang bermanfaat bagi banyak orang.",
+    "stats": {
+      "certificates": 8,
+      "technologies": 12,
+      "projects": 18,
+      "learningYears": 3
     }
   },
-  hero: {
-    badge: "Available for Learning & Projects",
-    greeting: "Hi, I'm",
-    name: "Rahmat Ramadhani",
-    roleLead: "Specialized as a ",
-    roles: [
-      "Software Engineering Student",
-      "Frontend Web Developer",
-      "Creative Programmer",
-      "UI/UX Enthusiast"
+  "hero": {
+    "badge": "Available for Learning & Projects",
+    "greeting": "Hi, I'm",
+    "name": "Rahmat Ramadhani",
+    "roleLead": "Specialized as a",
+    "roles": [
+      "Software Engineering Student"
     ],
-    description: "Saya adalah siswa Software Engineering yang berfokus pada Web Development, Software Development, UI/UX, dan teknologi digital terkini. Membangun aplikasi web modern dengan standar kode bersih, modular, dan berperforma tinggi.",
-    primaryBtnText: "View My Projects",
-    primaryBtnLink: "#projects",
-    secondaryBtnText: "Contact Me",
-    secondaryBtnLink: "#contact",
-    cvBtnText: "Download CV"
+    "description": "I am a Software Engineering Student at SMK Krian 1 who is interested in web development and programming. I enjoy learning new technologies and creating usefull digital projects.",
+    "primaryBtnText": "View My Projects",
+    "primaryBtnLink": "#projects",
+    "secondaryBtnText": "Contact Me",
+    "secondaryBtnLink": "#contact",
+    "cvBtnText": "Download CV"
   },
-  skills: [
-    { id: 1, name: "HTML5 Semantic", category: "Frontend", level: 95 },
-    { id: 2, name: "CSS3 / Flex / Grid", category: "Frontend", level: 90 },
-    { id: 3, name: "Vanilla JavaScript (ES6+)", category: "Frontend", level: 88 },
-    { id: 4, name: "Responsive & UI/UX", category: "Frontend", level: 92 },
-    { id: 5, name: "JavaScript Logic & DOM", category: "Programming", level: 88 },
-    { id: 6, name: "Python Fundamentals", category: "Programming", level: 80 },
-    { id: 7, name: "Java (OOP Architecture)", category: "Programming", level: 75 },
-    { id: 8, name: "C++ Core Logic", category: "Programming", level: 70 },
-    { id: 9, name: "Git & GitHub Workflow", category: "Tools", level: 86 },
-    { id: 10, name: "VS Code & Web DevTools", category: "Tools", level: 95 },
-    { id: 11, name: "Figma UI Prototyping", category: "Tools", level: 82 },
-    { id: 12, name: "REST APIs & Fetch / JSON", category: "Tools", level: 85 }
-  ],
-  projects: [
+  "skills": [
     {
-      id: 1,
-      title: "Personal Developer Portfolio",
-      category: "Web",
-      description: "Website portfolio personal bertema dark futuristic yang dibangun murni menggunakan HTML5, CSS3, dan Vanilla JavaScript ES6+.",
-      fullDescription: "Proyek portfolio modern yang dirancang untuk menampilkan identitas siswa rekayasa perangkat lunak secara profesional. Dilengkapi sistem tema gelap/terang, filter proyek interaktif, pencarian realtime, modal detail, dan animasi responsif tanpa sedikit pun dependensi eksternal.",
-      features: [
-        "100% Vanilla Web Standards (Zero Frameworks & Libraries)",
-        "Dark & Light Theme dengan LocalStorage Persistence",
-        "Realtime Fuzzy Search & Category Tab Filtering",
-        "Accessible Dialog Modal dengan Body Scroll Lock",
-        "Typing Effect & Intersection Observer Animasi Performa Tinggi"
-      ],
-      technologies: ["HTML5", "CSS3", "Vanilla JS", "LocalStorage", "Web APIs"],
-      image: "assets/projects/project-1.jpg",
-      github: "https://github.com",
-      demo: "#",
-      createdAt: "2026-01-15"
+      "id": 1,
+      "level": 40,
+      "name": "HTML5 Semantic",
+      "category": "Frontend"
     },
     {
-      id: 2,
-      title: "Restaurant Management System",
-      category: "JavaScript",
-      description: "Sistem kasir (POS) dan manajemen pesanan meja restoran interaktif berbasis Single-Page Application sederhana.",
-      fullDescription: "Aplikasi POS (Point of Sale) restoran untuk memanipulasi pesanan menu, kalkulasi subtotal dan pajak otomatis, manajemen status meja (tersedia/terisi), serta laporan ringkasan kas harian yang disimpan pada LocalStorage browser.",
-      features: [
-        "Manajemen menu makanan/minuman secara dinamis",
-        "Kalkulasi total harga, diskon, dan PPN otomatis",
-        "State status meja interaktif dengan visual cue",
-        "Pencetakan struk digital (Bill Preview Simulation)",
-        "Penyimpanan riwayat transaksi lokal browser"
-      ],
-      technologies: ["HTML5", "CSS Grid", "JavaScript ES6+", "LocalStorage"],
-      image: "assets/projects/project-2.jpg",
-      github: "https://github.com",
-      demo: "#",
-      createdAt: "2026-02-10"
+      "category": "Frontend",
+      "id": 2,
+      "name": "CSS3 / Flex / Grid",
+      "level": 10
     },
     {
-      id: 3,
-      title: "Cyber Odyssey - Browser Game",
-      category: "Game",
-      description: "Game arcade bertema retro-futuristik sci-fi yang dibangun dengan HTML5 Canvas dan JavaScript game-loop murni.",
-      fullDescription: "Game arcade 2D interaktif berlatar luar angkasa dengan sistem fisika partikel sederhana, collision detection akurat, dynamic difficulty multiplier, dan audio visual sintetis menggunakan Web Audio API tanpa modul eksternal.",
-      features: [
-        "60 FPS Native HTML5 Canvas 2D Rendering",
-        "Collision Detection & Particle Explosion Effects",
-        "Score Tracking & High Score LocalStorage Persistence",
-        "Keyboard & Touch Controls Support",
-        "State Management (Start, Playing, Pause, Game Over)"
-      ],
-      technologies: ["HTML5 Canvas", "JavaScript ES6+", "Physics Engine", "Web Audio"],
-      image: "assets/projects/project-3.jpg",
-      github: "https://github.com",
-      demo: "#",
-      createdAt: "2026-02-28"
+      "id": 3,
+      "category": "Frontend",
+      "name": "Vanilla JavaScript (ES6+)",
+      "level": 10
     },
     {
-      id: 4,
-      title: "Nexus Top-Up - Game Voucher Store",
-      category: "UI/UX",
-      description: "Konsep antarmuka toko digital voucher game dengan alur checkout instan dan micro-interactions modern.",
-      fullDescription: "Proyek desain dan implementasi frontend untuk toko top-up mata uang game. Menitikberatkan pada alur belanja yang mulus: pemilihan game, input User ID dengan validasi otomatis, pemilihan nominal voucher, serta metode pembayaran instan (QRIS & E-Wallet).",
-      features: [
-        "Katalog game multi-kategori dengan kartu interaktif",
-        "Input validasi server ID & format User ID",
-        "Pilihan nominal pecahan voucher otomatis kalkulasi",
-        "Simulasi pembayaran interaktif dengan QRIS dummy",
-        "Micro-interactions & Responsive Card Grid"
-      ],
-      technologies: ["HTML5", "CSS Variables", "JavaScript DOM", "Responsive UI"],
-      image: "assets/projects/project-4.jpg",
-      github: "https://github.com",
-      demo: "#",
-      createdAt: "2026-03-15"
+      "id": 4,
+      "level": 10,
+      "category": "Frontend",
+      "name": "Responsive & UI/UX"
     },
     {
-      id: 5,
-      title: "Apex Trade - Financial Dashboard",
-      category: "JavaScript",
-      description: "Dashboard analitik aset digital dengan grafik tren data interaktif dan visualisasi pasar realtime.",
-      fullDescription: "Platform monitoring portofolio instrumen keuangan dan mata uang digital. Dilengkapi grafik tren interaktif yang dirender via Native SVG, kalkulator konversi kurs, tabel order book dinamis, dan simulator order beli/jual.",
-      features: [
-        "Custom Native SVG Chart Generator (Zero Chart Library)",
-        "Live Ticker Simulation dengan Algoritma Fluktuasi Pasar",
-        "Order Book & Recent Market Transactions Table",
-        "Currency Converter Modal & Portfolio Balance Tracker",
-        "High Density Dark UI Developer Dashboard"
-      ],
-      technologies: ["JavaScript ES6+", "Native SVG", "CSS Flex/Grid", "DOM Events"],
-      image: "assets/projects/project-5.jpg",
-      github: "https://github.com",
-      demo: "#",
-      createdAt: "2026-04-02"
+      "id": 5,
+      "name": "JavaScript Logic & DOM",
+      "level": 10,
+      "category": "Programming"
     },
     {
-      id: 6,
-      title: "EduSphere - School Portal Website",
-      category: "Web",
-      description: "Portal informasi sekolah modern, pengumuman akademik, profil guru, dan kalender kegiatan siswa.",
-      fullDescription: "Website portal sekolah terintegrasi dengan tata letak berita dinamis, kalender akademik interaktif, direktori staf pengajar, dan form pendaftaran peserta didik baru (PPDB) dengan validasi formulir lengkap.",
-      features: [
-        "Navigasi hierarki portal sekolah profesional",
-        "Sistem filter berita & pengumuman sekolah",
-        "Kalender agenda akademik interaktif",
-        "Formulir pendaftaran siswa dengan validasi bertahap",
-        "Aksesibilitas ramah pembaca layar (ARIA Certified)"
-      ],
-      technologies: ["HTML5 Semantic", "CSS3 BEM", "JavaScript ES6+", "Form Validation"],
-      image: "assets/projects/project-6.jpg",
-      github: "https://github.com",
-      demo: "#",
-      createdAt: "2026-05-18"
+      "level": 35,
+      "name": "Python Fundamentals",
+      "id": 6,
+      "category": "Programming"
+    },
+    {
+      "category": "Programming",
+      "level": 20,
+      "id": 7,
+      "name": "Java (OOP Architecture)"
+    },
+    {
+      "level": 15,
+      "id": 8,
+      "category": "Programming",
+      "name": "C++ Core Logic"
+    },
+    {
+      "id": 9,
+      "name": "Git & GitHub Workflow",
+      "level": 20,
+      "category": "Tools"
+    },
+    {
+      "name": "VS Code & Web DevTools",
+      "category": "Tools",
+      "id": 10,
+      "level": 60
+    },
+    {
+      "id": 11,
+      "name": "Figma UI Prototyping",
+      "category": "Tools",
+      "level": 70
+    },
+    {
+      "category": "Tools",
+      "id": 12,
+      "level": 10,
+      "name": "REST APIs & Fetch / JSON"
     }
   ],
-  experience: [
+  "projects": [
     {
-      id: 1,
-      year: "2026 - Present",
-      role: "Lead Software Engineering Student",
-      company: "SMKN 1 Dev Lab & Independent Projects",
-      description: "Memimpin tim pembuatan aplikasi capstone sekolah berbasis web, mengorganisir repository Git, dan menerapkan standar penulisan kode modular, semantic, dan performan.",
-      technologies: ["Web Architecture", "JavaScript ES6+", "Git Flow"]
+      "image": "assets/projects/project-1.jpg",
+      "features": [],
+      "github": "https://embed.figma.com/proto/Skd7WYRCNgcux2502m3PG9/RAHMAT-RAMADHANI-X-RPL-1?node-id=1-57&starting-point-node-id=1%3A3&embed-host=share",
+      "fullDescription": "Projek Hasil Dari Lomba 17 agustus Web Design",
+      "category": "UI/UX",
+      "createdAt": "2026-09-09",
+      "technologies": [],
+      "description": "Projek Hasil Dari Lomba 17 agustus Web Design",
+      "id": 1788965526874,
+      "title": "Mobile App Design",
+      "demo": "https://embed.figma.com/proto/Skd7WYRCNgcux2502m3PG9/RAHMAT-RAMADHANI-X-RPL-1?node-id=1-57&starting-point-node-id=1%3A3&embed-host=share"
     },
     {
-      id: 2,
-      year: "2025",
-      role: "Frontend Web Developer & Open Source",
-      company: "Freelance & Student Community",
-      description: "Mengembangkan berbagai template antarmuka responsif, sistem kasir sederhana, dan landing page modern. Mendalami asynchronous JavaScript, DOM events, dan Web Storage API.",
-      technologies: ["Frontend", "CSS Grid/Flex", "REST APIs"]
+      "createdAt": "2026-09-09",
+      "title": "Menananam Kangkung: Tugas Ketahanan Pangan Mapel PPLG",
+      "technologies": [],
+      "fullDescription": "Proyek ketahanan pangan dalam mata pelajaran Pengembangan Perangkat Lunak dan Gim (PPLG) ini merupakan wujud nyata dari integrasi antara dunia pendidikan kejuruan dan kemandirian lingkungan. Kegiatan budidaya tanaman kangkung ini dirancang tidak hanya untuk memahami proses agrikultur praktis dari tahap penanaman hingga masa panen, tetapi juga sebagai media eksplorasi untuk melihat bagaimana teknologi dapat diterapkan dalam mengoptimalkan pengelolaan pertanian perkotaan skala kecil. Melalui proyek ini, para siswa dilatih untuk mengembangkan kepedulian terhadap isu ketahanan pangan, mengasah kedisiplinan dalam perawatan tanaman, serta membangun kesadaran kolektif tentang pentingnya inovasi berkelanjutan yang dimulai dari lingkungan sekolah.",
+      "description": "Proyek ketahanan pangan mata pelajaran Pengembangan Perangkat Lunak dan Gim (PPLG) berupa kegiatan budidaya tanaman kangkung, yang menggabungkan proses pembelajaran agrikultur praktis untuk mendukung kemandirian pangan.",
+      "demo": "#",
+      "features": [],
+      "category": "Farm",
+      "github": "#",
+      "image": "assets/projects/project-2.jpg",
+      "id": 1788966321770
     },
     {
-      id: 3,
-      year: "2024",
-      role: "Programming Fundamentals & School Projects",
-      company: "SMK Vocational Studies",
-      description: "Mempelajari fondasi algoritma logika komputasi, Object-Oriented Programming (OOP), pemodelan basis data relasional, serta konstruksi semantik web standar.",
-      technologies: ["Algorithms", "HTML & CSS", "Python & Java"]
+      "github": "#",
+      "id": 1788967027105,
+      "category": "Farm",
+      "demo": "#",
+      "image": "assets/projects/project-3.jpg",
+      "description": "Proyek ketahanan pangan dan pemanfaatan lahan sekolah melalui budidaya 10 jenis Tanaman Obat Keluarga (TOGA) pilihan, yang memadukan kegiatan agrikultur praktis dengan penerapan teknologi digital untuk mendukung kesehatan mandiri dan edukasi lingkungan.",
+      "fullDescription": "Proyek budidaya 10 Tanaman Obat Keluarga (TOGA) ini merupakan bagian dari inisiatif ketahanan pangan dan pemanfaatan lahan lingkungan sekitar. Proyek ini tidak hanya melatih kepedulian terhadap lingkungan dan kearifan lokal melalui pemanfaatan tanaman herbal, tetapi juga menjadi sarana aplikatif untuk menggabungkan ilmu rekayasa perangkat lunak dalam pengelolaan data pertanian modern.",
+      "createdAt": "2026-09-09",
+      "features": [],
+      "technologies": [],
+      "title": "Menanam 10 Jenis TOGA: Projek Kesehatan Mandiri dan Lingkungan"
     }
   ],
-  education: [
+  "experience": [],
+  "education": [
     {
-      id: 1,
-      institution: "SMK Negeri 1 Jakarta",
-      major: "Rekayasa Perangkat Lunak (Software Engineering)",
-      years: "2023 - 2026 (Expected)",
-      description: "Program kejuruan terakreditasi A dengan kurikulum berbasis industri. Mempelajari rekayasa perangkat lunak modern, database management, algoritma struktur data, dan pengembangan UI web profesional.",
-      coursework: [
+      "description": "Program kejuruan terakreditasi A dengan kurikulum berbasis industri. Mempelajari rekayasa perangkat lunak modern, database management, algoritma struktur data, dan pengembangan UI web profesional.",
+      "achievements": [
+        "Juara 1 Kompetisi Web Design (2026)."
+      ],
+      "institution": "SMK Krian 1",
+      "coursework": [
         "Pemrograman Berorientasi Objek (OOP)",
         "Pemrograman Web & Mobile",
         "Basis Data Relasional & SQL",
         "Desain Pengalaman Pengguna (UI/UX)",
-        "Pengujian Perangkat Lunak (QA)"
+        "Pengujian Perangkat Lokasi (QA)"
       ],
-      achievements: [
-        "Juara 1 Kompetisi Web Design & Inovasi IT Sekolah (2025).",
-        "Koordinator Divisi Frontend pada Kelompok Studi Coding RPL.",
-        "Peringkat 5 Besar Akademik Program Keahlian Rekayasa Perangkat Lunak."
-      ]
+      "id": 1,
+      "years": "2026 - Present",
+      "major": "Rekayasa Perangkat Lunak (Software Engineering)"
     }
   ],
-  certificates: [
+  "certificates": [
     {
-      id: 1,
-      title: "Frontend Web Development Masterclass",
-      issuer: "Dicoding Academy",
-      year: "2025",
-      credentialId: "DCD-FE-2025-98214",
-      image: "assets/certificates/cert-1.jpg",
-      description: "Kelulusan sertifikasi tingkat mahir dalam arsitektur website modern, semantic HTML5, CSS Flex/Grid, dan manipulasi DOM JavaScript tingkat lanjut.",
-      credentialUrl: "https://dicoding.com"
+      "image": "assets/certificates/cert-1.jpg",
+      "credentialUrl": "https://dicoding.com",
+      "credentialId": "NVP7WY21RZR0",
+      "id": 1,
+      "issuer": "Dicoding Academy",
+      "description": "memulai karier di dunia AI. Setelah mengikuti kelas, siswa diharapkan mampu menelaah berbagai konsep dasar dalam AI beserta penerapannya dengan baik.",
+      "title": "Belajar Dasar AI",
+      "year": "2026"
     },
     {
-      id: 2,
-      title: "JavaScript Algorithms & Data Structures",
-      issuer: "freeCodeCamp",
-      year: "2025",
-      credentialId: "FCC-JS-2025-44109",
-      image: "assets/certificates/cert-2.jpg",
-      description: "Menyelesaikan kurikulum intensif 300 jam algoritma pemrograman, rekursi, struktur data, dan Object-Oriented Programming (OOP).",
-      credentialUrl: "https://freecodecamp.org"
+      "year": "2026",
+      "description": "belajar dasar pemrograman Python dengan mengacu pada standar industri. Di akhir kelas, siswa mampu membuat program dengan Python menggunakan berbagai IDE yang telah dipelajari, seperti Visual Studio Code, Jupyter Notebook, dan Google Colaboratory.",
+      "issuer": "Dicoding Academy",
+      "credentialUrl": "https://freecodecamp.org",
+      "id": 2,
+      "image": "assets/certificates/cert-2.jpg",
+      "credentialId": "07Z6QR412ZQR",
+      "title": "Pemrograman Dengan Python"
     },
     {
-      id: 3,
-      title: "UI/UX Design Fundamentals",
-      issuer: "Interaction Design Org",
-      year: "2024",
-      credentialId: "IXD-FND-2024-11890",
-      image: "assets/certificates/cert-3.jpg",
-      description: "Sertifikasi perancangan antarmuka pengguna, prinsip wireframing, typography hierarki, teori warna, dan usability testing aplikasi.",
-      credentialUrl: "https://interaction-design.org"
+      "title": "Introduction To Financial Literacy",
+      "credentialUrl": "https://interaction-design.org",
+      "image": "assets/certificates/cert-3.jpg",
+      "year": "2026",
+      "id": 3,
+      "description": "bagi peserta Coding Camp powered by DBS Foundation 2026 yang ingin belajar mengenai Literasi Finansial. Di akhir kelas, peserta mampu membangun pemahaman yang kuat tentang prinsip-prinsip dasar literasi finansial, menerapkannya dalam pengambilan keputusan keuangan sehari-hari, serta merancang strategi finansial jangka panjang.",
+      "issuer": "Dicoding Academy",
+      "credentialId": "ERZR79RWMZYV"
     },
     {
-      id: 4,
-      title: "Junior Software Engineering Competency",
-      issuer: "BNSP / LSP SMKN 1",
-      year: "2026",
-      credentialId: "LSP-RPL-2026-00432",
-      image: "assets/certificates/cert-4.jpg",
-      description: "Sertifikasi Uji Kompetensi Keahlian (UKK) resmi standar Badan Nasional Sertifikasi Profesi pada skema Junior Software Engineer.",
-      credentialUrl: "https://bnsp.go.id"
+      "year": "2026",
+      "title": "Belajar Strategi Pengembangan Diri",
+      "credentialUrl": "https://bnsp.go.id",
+      "credentialId": "JLX1KL1KJP72",
+      "id": 4,
+      "issuer": "Dicoding Academy",
+      "image": "assets/certificates/cert-4.jpg",
+      "description": "bagi pelajar maupun pekerja yang ingin mengembangkan diri dalam kehidupan pribadi dan profesi (karier). Setelah mengikuti kelas, siswa mampu menerapkan berbagai strategi pengembangan diri melalui pengelolaan pola pikir (growth mindset), waktu (time management), dan proses adaptasi (adaptability) dalam kehidupan pribadi dan profesional."
     }
   ],
-  services: [
+  "services": [
     {
-      id: 1,
-      title: "Web Development",
-      description: "Pembuatan website kustom dari nol dengan arsitektur HTML5 semantik, struktur kode rapi, dan kecepatan render tinggi.",
-      icon: "🌐",
-      features: [
-        "Semantic HTML5 & Accessible Markup",
-        "SEO-friendly Meta Tags & Open Graph",
-        "Clean Single-Page & Multi-Page Architecture"
-      ],
-      status: "Active"
-    },
-    {
-      id: 2,
-      title: "Frontend Development",
-      description: "Menerjemahkan ide visual menjadi halaman web responsif yang bekerja mulus di smartphone, tablet, maupun layar desktop.",
-      icon: "📱",
-      features: [
-        "Mobile-First Responsive Layouts",
-        "Modern CSS Grid & Flexbox Mastery",
-        "Cross-Browser Compatibility Verified"
-      ],
-      status: "Active"
-    },
-    {
-      id: 3,
-      title: "UI Implementation",
-      description: "Penerapan desain Figma menjadi kode CSS presisi tinggi dengan transisi halus, micro-interactions, dan palet futuristik.",
-      icon: "✨",
-      features: [
-        "Pixel-Perfect Figma to HTML/CSS",
-        "Dark & Light Theme Integration",
-        "Smooth Transitions & Micro-Interactions"
-      ],
-      status: "Active"
-    },
-    {
-      id: 4,
-      title: "JavaScript Development",
-      description: "Pengembangan logika interaktif dinamis seperti form validation, search filter realtime, modal popup, dan LocalStorage state.",
-      icon: "⚡",
-      features: [
-        "Native DOM Manipulation & Event Flow",
-        "State Persistence with Web Storage",
-        "Asynchronous APIs & JSON Handling"
-      ],
-      status: "Active"
-    },
-    {
-      id: 5,
-      title: "Website Optimization",
-      description: "Audit dan perbaikan performa website untuk mencapai skor Lighthouse optimal, kecepatan render tinggi, dan hemat bandwidth.",
-      icon: "🚀",
-      features: [
-        "Asset Optimization & Lazy Loading",
-        "Zero Frameworks & External Overhead",
-        "Clean, Modular, Scalable Code Standards"
-      ],
-      status: "Active"
+      "features": [],
+      "icon": "wegwg",
+      "status": "Active",
+      "description": "egfeswgew",
+      "title": "rhrwh",
+      "id": 1789005603905
     }
   ],
-  social: {
-    github: "https://github.com",
-    linkedin: "https://linkedin.com",
-    instagram: "https://instagram.com",
-    email: "rahmat.ramadhani@example.com"
+  "social": {
+    "github": "https://github.com/ramadhanirahmat47-rgb",
+    "linkedin": "https://www.linkedin.com/in/rahmat-ramadhani01",
+    "instagram": "https://www.instagram.com/matrahmat_t/",
+    "email": "ramadhanirahmat47@gmail.com"
   },
-  settings: {
-    siteTitle: "Rahmat Ramadhani | Software Engineering Student Portfolio",
-    accentColor: "#00f2fe",
-    theme: "dark",
-    footerText: "Membangun pengalaman antarmuka digital yang modern, responsif, dan berperforma tinggi dengan standar web murni.",
-    footerCopyright: "Rahmat Ramadhani. Built with HTML5, CSS3 & Vanilla JavaScript ES6+.",
-    lastUpdated: "2026-09-07"
+  "settings": {
+    "siteTitle": "Rahmat Ramadhani | Software Engineering Student Portfolio",
+    "accentColor": "#38bdf8",
+    "theme": "dark",
+    "footerText": "Terus belajar, terus berkarya, dan menciptakan solusi dari setiap tantangan.",
+    "footerCopyright": "Rahmat Ramadhani. Built with Love❤️.",
+    "lastUpdated": "2026-09-10"
   }
-};
+}
+;
 
 /* ==========================================================================
    TOAST NOTIFICATION MANAGER
@@ -1772,5 +1680,5 @@ const AdminApp = {
 window.AdminApp = AdminApp; 
 
 document.addEventListener('DOMContentLoaded', () => {
-  AdminApp.init();
+  initFirebase();
 });
