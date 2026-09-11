@@ -9,3 +9,5 @@
         <div class="timeline reveal" id="experience-timeline"></div>
       </div>
     </section>
+
+<span class="chip-tag">HTML5</span><span class="chip-tag">CSS3</span><span class="chip-tag">JavaScript</span><span class="chip-tag">Git</span>
